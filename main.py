@@ -1,5 +1,6 @@
 
 from gloommodifiers import GloomDeckEffects
+from timeit import timeit
 
 # Build deck and feed into class
 deck = {"zero": 6,
@@ -20,5 +21,7 @@ gdeck = GloomDeckEffects(deck)
 
 combs = gdeck.get_card_combinations()
 print(combs)
-effects = gdeck.get_effects()
-print(effects)
+
+timeit_count = 10
+t1 = timeit(lambda: gdeck.get_card_combinations(), number=timeit_count)
+print("Combinations t[s]: ", t1)

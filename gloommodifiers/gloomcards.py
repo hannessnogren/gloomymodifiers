@@ -40,12 +40,28 @@ class GloomCards:
         card = self.cards[cardname]
         return card["type"] == "double"
 
+    def get_rollings(self, cardnamelist):
+        res = []
+        for name in cardnamelist:
+            if self.is_rolling(name):
+                res.append(name)
+        return res
+
+    def get_terminals(self, cardnamelist):
+        res = []
+        for name in cardnamelist:
+            if not self.is_rolling(name):
+                res.append(name)
+        return res
+
     def total_adv_effect(self, cards):
-        # TODO If 2 cards, return max
+        # TODO If 2 cards, return max dmg
+        # If same dmg, return "first"?
         return
 
     def total_disadv_effect(self, cards):
-        # TODO Only keep worst card
+        # TODO Only return worst card
+        # If two same dmg, return "first"?
         return
 
     def total_effect(self, cards):
