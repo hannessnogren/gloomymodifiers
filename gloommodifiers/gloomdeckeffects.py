@@ -40,9 +40,6 @@ class GloomDeckEffects:
             effects = self.get_row_effects(draws, advantage, disadvantage)
             effects["probability"] = self.probability(draws)
 
-            print(index, ":", draws)
-            print(effects)
-
             all_effects.append(effects)
 
         return pd.DataFrame(all_effects).fillna(0)

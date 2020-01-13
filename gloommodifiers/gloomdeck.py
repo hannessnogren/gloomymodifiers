@@ -54,7 +54,6 @@ class GloomDeck:
             elif cardcount > 0:
                 terminals.append(cardname)
 
-        # '''
         rolling = pd.DataFrame(it.product(*card_counts), columns=card_names)
         terminal = pd.DataFrame(np.eye(len(terminals), dtype=int),
                                 columns=terminals)
@@ -65,15 +64,5 @@ class GloomDeck:
         combinations = pd.merge(
             rolling, terminal, on='key').drop(
             columns='key')
-        # '''
 
-        '''
-        card_names.append("terminal")
-        card_counts.append(terminals)
-        combinations = pd.DataFrame(it.product(*card_counts), columns=card_names)
-        for idx, t in enumerate(terminals):
-            index = len(combinations.columns)
-            values = (combinations["terminal"] == t)*1
-            combinations.insert(loc=index, column=t, value=values)
-        '''
         return combinations

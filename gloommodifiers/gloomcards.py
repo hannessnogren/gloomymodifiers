@@ -2,6 +2,7 @@
 class GloomCards:
     def __init__(self):
         self.cards = {}
+        # TODO Make this general
         self.add_card("zero", "normal", {"dmg": 0})
         self.add_card("minusone", "normal", {"dmg": -1})
         self.add_card("minustwo", "normal", {"dmg": -2})
