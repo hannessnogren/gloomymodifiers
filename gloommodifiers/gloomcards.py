@@ -56,19 +56,22 @@ class GloomCards:
 
     def total_adv_effect(self, cards):
         # TODO If 2 cards, return max dmg
-        # If same dmg, return "first"?
+        # If same dmg, return first
         return
 
     def total_disadv_effect(self, cards):
         # TODO Only return worst card
-        # If two same dmg, return "first"?
+        # If two same dmg, return first
         return
 
     def total_effect(self, cards):
         total_effect = {}
-        for cardname in cards:
+        for cardname, cardcount in cards.items():
+            if cardname not in self.cards:
+                print("Card ", cardname, ":", cardcount, " not found.")
+                continue
+
             card = self.cards[cardname]
-            cardcount = cards[cardname]
             effects = card["effect"]
             for e in effects:
                 self.add_effect(e, cardcount, effects[e], total_effect)

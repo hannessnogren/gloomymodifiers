@@ -8,12 +8,11 @@ class GloomDeckEffects:
     def __init__(self, deck):
         self.cards = GloomCards()
         self.deck = GloomDeck(deck, self.cards)
-        self.combinations = self.deck.get_all_combinations()
+        self.combinations = self.deck.get_all_combinations
         return
 
     def set_deck(self, deck):
         self.deck = GloomDeck(deck, self.cards)
-        self.combinations = self.deck.get_all_combinations()
         return
 
     def set_cards(self, cards):
@@ -22,7 +21,7 @@ class GloomDeckEffects:
         return
 
     # Get effects of single chain
-    def get_chain_effects(self, cards, adv=False, disadv=False):
+    def get_row_effects(self, cards, adv=False, disadv=False):
         if (adv and disadv) or not (adv or disadv):
             return self.cards.total_effect(cards)
         elif adv:
@@ -34,8 +33,13 @@ class GloomDeckEffects:
 
     # Get all effects as pandas df
     def get_effects(self, advantage=False, disadvantage=False):
-        # TODO this
-        return
+        all_effects = []
+        c = self.combinations().to_dict('index')
+        for index, draws in c.items():
+            effects = self.get_row_effects(draws, advantage, disadvantage)
+            all_effects.append(effects)
+
+        return pd.DataFrame(all_effects).fillna(0)
 
     def get_card_combinations(self):
-        return self.combinations
+        return self.combinations()
