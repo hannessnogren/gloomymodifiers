@@ -67,22 +67,20 @@ class GloomCards:
     def total_effect(self, cards):
         total_effect = {}
         for cardname, cardcount in cards.items():
+            if cardcount == 0:
+                continue
             if cardname not in self.cards:
                 print("Card ", cardname, ":", cardcount, " not found.")
                 continue
 
             card = self.cards[cardname]
             effects = card["effect"]
-            for e in effects:
-                self.add_effect(e, cardcount, effects[e], total_effect)
+            for effect, value in effects.items():
+                if type(value) in [bool, str]:
+                    total_effect[effect] = value
+                elif effect not in total_effect:
+                    total_effect[effect] = value*cardcount
+                else:
+                    total_effect[effect] += value*cardcount
 
         return total_effect
-
-    def add_effect(self, effect, count, value, l):
-        if type(value) in [bool, str]:
-            l[effect] = value
-        elif effect not in l:
-            l[effect] = value*count
-        else:
-            l[effect] += value*count
-        return

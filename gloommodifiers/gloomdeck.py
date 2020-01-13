@@ -1,5 +1,6 @@
 
 from .gloomcards import GloomCards
+from .gloomdrawchain import GloomDrawChain
 import pandas as pd
 import numpy as np
 import itertools as it
@@ -27,9 +28,20 @@ class GloomDeck:
     def cards_left(self, drawchain, card=None):
         return self.card_count(card) - drawchain.card_count(card)
 
-    # TODO probability to draw set of cards
-    def probability(self, cards):
-        return
+    # Return probability for card when draws drawn
+    def card_probability(self, card, draws):
+        return self.cards_left(draws, card) / self.cards_left(draws)
+
+    def probability(self, draws):
+        drawchain = GloomDrawChain()
+        for cardname, cardcount in draws.items():
+            if cardcount > self.card_count(cardname):
+                return 0.0
+            for i in range(cardcount):
+                drawchain.draw(
+                    cardname, self.card_probability(
+                        cardname, drawchain))
+        return drawchain.prob
 
     def get_all_combinations(self, draw_two=False):
         card_counts = []
@@ -42,7 +54,7 @@ class GloomDeck:
             elif cardcount > 0:
                 terminals.append(cardname)
 
-        #'''
+        # '''
         rolling = pd.DataFrame(it.product(*card_counts), columns=card_names)
         terminal = pd.DataFrame(np.eye(len(terminals), dtype=int),
                                 columns=terminals)
@@ -50,8 +62,10 @@ class GloomDeck:
         # TODO Any way to avoid these keys?
         rolling['key'] = 1
         terminal['key'] = 1
-        combinations = pd.merge(rolling, terminal, on='key').drop(columns='key')
-        #'''
+        combinations = pd.merge(
+            rolling, terminal, on='key').drop(
+            columns='key')
+        # '''
 
         '''
         card_names.append("terminal")

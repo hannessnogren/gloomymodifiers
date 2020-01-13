@@ -9,6 +9,7 @@ class GloomDeckEffects:
         self.cards = GloomCards()
         self.deck = GloomDeck(deck, self.cards)
         self.combinations = self.deck.get_all_combinations
+        self.probability = self.deck.probability
         return
 
     def set_deck(self, deck):
@@ -37,6 +38,11 @@ class GloomDeckEffects:
         c = self.combinations().to_dict('index')
         for index, draws in c.items():
             effects = self.get_row_effects(draws, advantage, disadvantage)
+            effects["probability"] = self.probability(draws)
+
+            print(index, ":", draws)
+            print(effects)
+
             all_effects.append(effects)
 
         return pd.DataFrame(all_effects).fillna(0)
